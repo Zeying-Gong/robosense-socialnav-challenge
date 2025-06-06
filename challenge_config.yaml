@@ -11,7 +11,7 @@ leaderboard_description: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 evaluation_script: evaluation_script.zip
 remote_evaluation: True
 start_date: 2025-06-06 00:00:00
-end_date: 2099-05-31 23:59:59
+end_date: 2025-10-19 23:59:59
 published: False
 tags: 
   - random-number-generation
@@ -22,17 +22,29 @@ leaderboard:
   - id: 1
     schema:
       {
-        "labels": ["Metric1", "Metric2", "Metric3", "Total"],
+        "labels": ["SR", "SPL", "PSC", "H-Coll", "Total"],
         "default_order_by": "Total",
         "metadata": {
-          "Metric1": {
+          "SR": {
             "sort_ascending": True,
-            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            "description": "Success Rate — the percentage of episodes where the agent successfully reaches the goal.",
           },
-          "Metric2": {
+          "SPL": {
             "sort_ascending": True,
-            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          }
+            "description": "Success weighted by Path Length — measures efficiency relative to shortest path.",
+          },
+          "PSC": {
+            "sort_ascending": True,
+            "description": "Personal Space Compliance — how well the agent avoids violating human personal space.",
+          },
+          "H-Coll": {
+            "sort_ascending": False,
+            "description": "Human Collision Count — number of times the agent collides with humans.",
+          },
+          "Total": {
+            "description": "Weighted score: 0.4×SR + 0.3×SPL + 0.3×PSC",
+            "sort_ascending": True
+          },
         }
       }
 
@@ -48,8 +60,8 @@ challenge_phases:
     allowed_email_ids: []
     disable_logs: False
     is_submission_public: True
-    start_date: 2019-01-19 00:00:00
-    end_date: 2099-04-25 23:59:59
+    start_date: 2025-06-06 00:00:00
+    end_date: 2025-10-20 23:59:59
     test_annotation_file: annotations/test_annotations_devsplit.json
     codename: dev
     max_submissions_per_day: 5
@@ -83,20 +95,20 @@ challenge_phases:
         required: True
     is_restricted_to_select_one_submission: False
     is_partial_submission_evaluation_enabled: False
-    allowed_submission_file_types: ".json, .zip, .txt, .tsv, .gz, .csv, .h5, .npy, .npz"
+    allowed_submission_file_types: "" # ".json, .zip, .txt, .tsv, .gz, .csv, .h5, .npy, .npz"
   - id: 2
     name: Test Phase
     description: templates/challenge_phase_2_description.html
     leaderboard_public: True
     is_public: False
-    challenge: 2
+    challenge: 1
     is_active: True
     max_concurrent_submissions_allowed: 3
     allowed_email_ids: []
     disable_logs: False
     is_submission_public: True
-    start_date: 2019-01-01 00:00:00
-    end_date: 2099-05-24 23:59:59
+    start_date: 2025-06-15 00:00:00
+    end_date: 2025-10-20 23:59:59
     test_annotation_file: annotations/test_annotations_testsplit.json
     codename: test
     max_submissions_per_day: 5
@@ -128,6 +140,7 @@ challenge_phases:
         type: boolean
     is_restricted_to_select_one_submission: False
     is_partial_submission_evaluation_enabled: False
+    allowed_submission_file_types: "" # ".json, .zip, .txt, .tsv, .gz, .csv, .h5, .npy, .npz"
 
 dataset_splits:
   - id: 1
@@ -152,7 +165,7 @@ challenge_phase_splits:
     visibility: 3
     leaderboard_decimal_precision: 2
     is_leaderboard_order_descending: True
-    showeceution_time: False
+    show_execution_time: False
     show_leaderboard_by_latest_submission: False
   - challenge_phase_id: 2
     leaderboard_id: 1

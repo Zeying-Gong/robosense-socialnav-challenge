@@ -15,8 +15,8 @@ queue_name = os.environ["QUEUE_NAME"]
 challenge_pk = os.environ["CHALLENGE_PK"]
 save_dir = os.environ.get("SAVE_DIR", "./")
 
-
 def download(submission, save_dir):
+    os.makedirs(save_dir, exist_ok=True)  # 保证 save_dir 存在
     response = requests.get(submission["input_file"])
     submission_file_path = os.path.join(
         save_dir, submission["input_file"].split("/")[-1]
@@ -24,6 +24,7 @@ def download(submission, save_dir):
     with open(submission_file_path, "wb") as f:
         f.write(response.content)
     return submission_file_path
+
 
 
 def update_running(evalai, submission_pk):
@@ -73,36 +74,40 @@ if __name__ == "__main__":
     evalai = EvalAI_Interface(auth_token, evalai_api_server, queue_name, challenge_pk)
 
     while True:
-        # Get the message from the queue
-        message = evalai.get_message_from_sqs_queue()
-        message_body = message.get("body")
-        if message_body:
-            submission_pk = message_body.get("submission_pk")
-            challenge_pk = message_body.get("challenge_pk")
-            phase_pk = message_body.get("phase_pk")
-            # Get submission details -- This will contain the input file URL
-            submission = evalai.get_submission_by_pk(submission_pk)
-            challenge_phase = evalai.get_challenge_phase_by_pk(phase_pk)
-            if (
-                submission.get("status") == "finished"
-                or submission.get("status") == "failed"
-                or submission.get("status") == "cancelled"
-            ):
-                message_receipt_handle = message.get("receipt_handle")
-                evalai.delete_message_from_sqs_queue(message_receipt_handle)
+        try:
+            # Get the message from the queue
+            message = evalai.get_message_from_sqs_queue()
+            message_body = message.get("body")
+            if message_body:
+                submission_pk = message_body.get("submission_pk")
+                challenge_pk = message_body.get("challenge_pk")
+                phase_pk = message_body.get("phase_pk")
+                # Get submission details -- This will contain the input file URL
+                submission = evalai.get_submission_by_pk(submission_pk)
+                challenge_phase = evalai.get_challenge_phase_by_pk(phase_pk)
+                if (
+                    submission.get("status") == "finished"
+                    or submission.get("status") == "failed"
+                    or submission.get("status") == "cancelled"
+                ):
+                    message_receipt_handle = message.get("receipt_handle")
+                    evalai.delete_message_from_sqs_queue(message_receipt_handle)
 
-            else:
-                if submission.get("status") == "submitted":
-                    update_running(evalai, submission_pk)
-                submission_file_path = download(submission, save_dir)
-                try:
-                    results = evaluate(
-                        submission_file_path, challenge_phase["codename"]
-                    )
-                    update_finished(
-                        evalai, phase_pk, submission_pk, json.dumps(results["result"])
-                    )
-                except Exception as e:
-                    update_failed(evalai, phase_pk, submission_pk, str(e))
+                else:
+                    if submission.get("status") == "submitted":
+                        update_running(evalai, submission_pk)
+                    submission_file_path = download(submission, save_dir)
+                    try:
+                        results = evaluate(
+                            submission_file_path, challenge_phase["codename"]
+                        )
+                        update_finished(
+                            evalai, phase_pk, submission_pk, json.dumps(results["result"])
+                        )
+                    except Exception as e:
+                        update_failed(evalai, phase_pk, submission_pk, str(e))
+        except Exception as e:
+            print(f"Worker crashed: {str(e)}")
+            time.sleep(60)
         # Poll challenge queue for new submissions
         time.sleep(60)

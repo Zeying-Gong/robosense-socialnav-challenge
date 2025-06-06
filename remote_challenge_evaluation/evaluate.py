@@ -50,11 +50,24 @@ def evaluate(user_submission_file, phase_codename, test_annotation_file=None, **
     output = {}
     if phase_codename == "dev":
         print("Evaluating for Dev Phase")
+        # 固定值（假设用作调试）
+        SR = 0.45
+        SPL = 0.30
+        PSC = 0.55
+        HColl = 0.10
+        # 根据你设定的权重计算 Total
+        Total = 0.4 * SR + 0.3 * SPL + 0.3 * PSC
         output["result"] = [
             {
                 "split": "train_split",
                 "show_to_participant": True,
-                "accuracies": {"Metric1": 90},
+                "accuracies": {
+                    "SR": round(SR, 4),
+                    "SPL": round(SPL, 4),
+                    "PSC": round(PSC, 4),
+                    "H-Coll": round(HColl, 4),
+                    "Total": round(Total, 4),
+                },
             },
         ]
         print("Completed evaluation for Dev Phase")
