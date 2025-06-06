@@ -12,7 +12,7 @@ evaluation_script: evaluation_script.zip
 remote_evaluation: True
 start_date: 2025-06-06 00:00:00
 end_date: 2099-05-31 23:59:59
-published: True
+published: False
 tags: 
   - random-number-generation
   - machine-learning
@@ -41,7 +41,7 @@ challenge_phases:
     name: Dev Phase
     description: templates/challenge_phase_1_description.html
     leaderboard_public: False
-    is_public: True
+    is_public: False
     challenge: 1
     is_active: True
     max_concurrent_submissions_allowed: 3
@@ -88,7 +88,7 @@ challenge_phases:
     name: Test Phase
     description: templates/challenge_phase_2_description.html
     leaderboard_public: True
-    is_public: True
+    is_public: False
     challenge: 2
     is_active: True
     max_concurrent_submissions_allowed: 3
