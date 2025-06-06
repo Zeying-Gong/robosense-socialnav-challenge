@@ -1,6 +1,6 @@
 # If you are not sure what all these fields mean, please refer our documentation here:
 # https://evalai.readthedocs.io/en/latest/configuration.html
-title: Random Number Generator Challenge
+title: SocialNav Challenge
 short_description: Random number generation challenge for each submission
 description: templates/description.html
 evaluation_details: templates/evaluation_details.html
@@ -9,10 +9,10 @@ image: logo.jpg
 submission_guidelines: templates/submission_guidelines.html
 leaderboard_description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras egestas a libero nec sagittis.
 evaluation_script: evaluation_script.zip
-remote_evaluation: False
+remote_evaluation: True
 start_date: 2019-01-01 00:00:00
 end_date: 2099-05-31 23:59:59
-published: True
+published: False
 tags: 
   - random-number-generation
   - machine-learning
@@ -41,7 +41,7 @@ challenge_phases:
     name: Dev Phase
     description: templates/challenge_phase_1_description.html
     leaderboard_public: False
-    is_public: True
+    is_public: False
     challenge: 1
     is_active: True
     max_concurrent_submissions_allowed: 3
@@ -88,7 +88,7 @@ challenge_phases:
     name: Test Phase
     description: templates/challenge_phase_2_description.html
     leaderboard_public: True
-    is_public: True
+    is_public: False
     challenge: 2
     is_active: True
     max_concurrent_submissions_allowed: 3
