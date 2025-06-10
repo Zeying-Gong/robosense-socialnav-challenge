@@ -22,17 +22,29 @@ leaderboard:
   - id: 1
     schema:
       {
-        "labels": ["Metric1", "Metric2", "Metric3", "Total"],
+        "labels": ["SR", "SPL", "PSC", "H-Coll", "Total"],
         "default_order_by": "Total",
         "metadata": {
-          "Metric1": {
-            "sort_ascending": True,
-            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "SR": {
+            "sort_ascending": False,
+            "description": "Success Rate — the percentage of episodes where the agent successfully reaches the goal.",
           },
-          "Metric2": {
+          "SPL": {
+            "sort_ascending": False,
+            "description": "Success weighted by Path Length — measures efficiency relative to shortest path.",
+          },
+          "PSC": {
+            "sort_ascending": False,
+            "description": "Personal Space Compliance — how well the agent avoids violating human personal space.",
+          },
+          "H-Coll": {
             "sort_ascending": True,
-            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-          }
+            "description": "Human Collision Count — number of times the agent collides with humans.",
+          },
+          "Total": {
+            "description": "Weighted score: 0.4×SR + 0.3×SPL + 0.3×PSC",
+            "sort_ascending": False
+          },
         }
       }
 
